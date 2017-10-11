@@ -20,12 +20,13 @@
 <div id="chat">
 
 <ul id="messages">
-  <li v-for="message in messages">{{message}}</li>
+  <li v-for="message in messages">{{message.uid}}: [{{message.message}}]</li>
 </ul>
 
 
 <form v-on:submit="send">
 	<input  v-model="message">
+  <input type="hidden" v-model="uid" value="">
 	<button>Send</button>
 </form>
 
@@ -49,16 +50,21 @@ var example1 = new Vue({
 
   data:{
     messages:[],
-  	message:''
+  	message:'',
+    uid:''
   }, 
 
   mounted: function () {
 
+     var x = Math.floor((Math.random() * 100) + 1);
+
+     this.uid = "T-"+x ;
+
     socket.on('testerEvent',function(message){
 
-    this.messages.push(message.message);
+    this.messages.push(message);
 
-    console.log(message.message);
+    
 
     }.bind(this));
 
@@ -67,7 +73,9 @@ var example1 = new Vue({
 
   	send:function(e)
   	{
-  		socket.emit('chat.message',this.message);
+  		//socket.emit('chat.message',this.message);
+
+      socket.emit('chat.message',{uid:this.uid,message:this.message});
 
       e.preventDefault();
 
