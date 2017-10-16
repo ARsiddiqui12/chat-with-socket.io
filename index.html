@@ -12,6 +12,10 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
+      .alignright{
+        text-align: right;
+      }
+
     </style>
 </head>
 <body>
@@ -20,7 +24,7 @@
 <div id="chat">
 
 <ul id="messages">
-  <li v-for="message in messages">{{message.uid}}: [{{message.message}}]</li>
+  <li  v-for="message in messages" v-bind:class="{ alignright: isActive }">[{{message.uid}}] Message: <strong><i>{{message.message}}</i></strong></li>
 </ul>
 
 
@@ -51,22 +55,25 @@ var example1 = new Vue({
   data:{
     messages:[],
   	message:'',
-    uid:''
+    uid:'',
+    isActive:this.uid > 0 ? true : false 
   }, 
 
   mounted: function () {
 
      var x = Math.floor((Math.random() * 100) + 1);
 
-     this.uid = "T-"+x ;
+     this.uid = x ;
 
     socket.on('testerEvent',function(message){
 
     this.messages.push(message);
 
-    
+    nu = message.uid ;
 
     }.bind(this));
+
+    
 
   },
   methods:{

@@ -25,7 +25,7 @@ socket.on('chat.message',function(message){
 
       io.sockets.emit('testerEvent', {uid:message.uid,message:message.message});
      
-	  console.log("("+message.uid+") Message:"+message.message);
+	  //console.log("("+message.uid+") Message:"+message.message);
 
 });
 
